@@ -12,16 +12,16 @@ test.describe('', () => {
         expect(await inventoryPage.inventoryItems.count()).toBeGreaterThanOrEqual(1);
     });
 
-    test('Add and remove product from the cart', async ({ loginPage, inventoryPage, shopingCartPage }) => {
+    test('Add and remove product from the cart', async ({ loginPage, inventoryPage, shoppingCartPage }) => {
         await loginPage.navigate();
         await loginPage.performLogin('standard_user', 'secret_sauce');
         await inventoryPage.addItemToCartById(0);
         expect(await inventoryPage.getNumberOfItemsInCart()).toBe('1');
 
-        await inventoryPage.shopingCart.click();
-        expect(await shopingCartPage.cartItems.count()).toBeGreaterThanOrEqual(1);
+        await inventoryPage.shoppingCart.click();
+        expect(await shoppingCartPage.cartItems.count()).toBeGreaterThanOrEqual(1);
 
-        await shopingCartPage.removeCartItemById(0);
-        await expect(shopingCartPage.cartItems).not.toBeAttached();
+        await shoppingCartPage.removeCartItemById(0);
+        await expect(shoppingCartPage.cartItems).not.toBeAttached();
     });
 });
