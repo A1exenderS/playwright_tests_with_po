@@ -15,6 +15,11 @@ npm install
 npm run test
 ```
 
+### Run tests:
+```bash
+npm run sorting-tests
+```
+
 ### Launch tests in UI mode:
 ```bash
 npm run test-ui
