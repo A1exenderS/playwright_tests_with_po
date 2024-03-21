@@ -15,9 +15,9 @@ npm install
 npm run test
 ```
 
-### Run tests:
+### Run tests task-1:
 ```bash
-npm run sorting-tests
+npm run task-1
 ```
 
 ### Launch tests in UI mode:

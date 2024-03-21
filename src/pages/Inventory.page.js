@@ -9,6 +9,10 @@ export class InventoryPage extends BaseSwagLabPage {
 
     get inventoryItems() { return this.page.locator('.inventory_item'); }
 
+    get inventoryItemName() { return this.page.locator('.inventory_item_name'); }
+
+    get inventoryItemPrice() { return this.page.locator('.inventory_item_price'); }
+
     get addItemToCartButtons() { return this.page.locator('[id^="add-to-cart"]'); }
 
     async addItemToCartById(id) {
@@ -17,5 +21,18 @@ export class InventoryPage extends BaseSwagLabPage {
 
     async performSorting(value) {
         await this.productsSortSelect.selectOption(value); // az, za, lohi, hilo
+    }
+
+    async getInventoryItemsList() {
+        const items = await this.inventoryItems.all();
+        return Promise.all(items.map(async (item) => {
+            const name = await item.locator('.inventory_item_name').textContent();
+            let price = await item.locator('.inventory_item_price').textContent();
+            price = price.replace('$', '');
+            return {
+                name,
+                price,
+            };
+        }));
     }
 }
