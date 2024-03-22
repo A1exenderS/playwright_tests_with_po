@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "task-1": "npx playwright test ./src/tests/sorting.spec.js",
+    "task-1": "npx playwright test ./src/tests/task1.spec.js",
+    "task-2": "npx playwright test ./src/tests/task2.spec.js",
     "test-ui": "npx playwright test --ui",
     "lint": "npx eslint . --color --fix --quiet"
   },
