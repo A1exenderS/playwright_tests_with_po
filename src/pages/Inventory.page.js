@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 const { BaseSwagLabPage } = require('./BaseSwagLab.page');
 
 export class InventoryPage extends BaseSwagLabPage {
@@ -40,18 +42,21 @@ export class InventoryPage extends BaseSwagLabPage {
         }));
     }
 
-    async addRandomItemsToCart(amount) {
-        const itemsAddToCartButton = await this.addItemToCartButtons.all();
-        let amountOfItems = amount;
-        if (amountOfItems > itemsAddToCartButton.length) {
-            amountOfItems = itemsAddToCartButton.length;
+    async addRandomItemsToCart() {
+        const itemsAddToCartItems = await this.inventoryItems.all();
+
+        let amount = 0;
+        while (amount === 0) {
+            amount = Math.floor(Math.random() * (itemsAddToCartItems.length + 1));
         }
 
         const randomAddToCartButtons = new Set();
-        while (randomAddToCartButtons.size < amountOfItems) {
-            const randomAddToCartButtonIndex = Math.floor(Math.random() * itemsAddToCartButton.length);
+        while (randomAddToCartButtons.size < amount) {
+            const randomAddToCartButtonIndex = Math.floor(Math.random() * itemsAddToCartItems.length);
             randomAddToCartButtons.add(randomAddToCartButtonIndex);
         }
-        await Promise.all([...randomAddToCartButtons].map(async (index) => itemsAddToCartButton[index].click()));
+        for (const index of randomAddToCartButtons) {
+            await itemsAddToCartItems[index].locator(this.addItemToCartButtons).click();
+        }
     }
 }
