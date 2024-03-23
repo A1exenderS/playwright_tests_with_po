@@ -3,6 +3,8 @@ const { BaseSwagLabPage } = require('./BaseSwagLab.page');
 export class InventoryPage extends BaseSwagLabPage {
     url = '/inventory.html';
 
+    get addButton() { return this.page.locator('//button[contains(text(), "Add to cart")]'); }
+
     get headerTitle() { return this.page.locator('.title'); } // .header_secondary_container - parent
 
     get productsSortSelect() { return this.page.locator('.product_sort_container'); }
@@ -36,5 +38,20 @@ export class InventoryPage extends BaseSwagLabPage {
                 price,
             };
         }));
+    }
+
+    async addRandomItemsToCart(amount) {
+        const itemsAddToCartButton = await this.addItemToCartButtons.all();
+        let amountOfItems = amount;
+        if (amountOfItems > itemsAddToCartButton.length) {
+            amountOfItems = itemsAddToCartButton.length;
+        }
+
+        const randomAddToCartButtons = new Set();
+        while (randomAddToCartButtons.size < amountOfItems) {
+            const randomAddToCartButtonIndex = Math.floor(Math.random() * itemsAddToCartButton.length);
+            randomAddToCartButtons.add(randomAddToCartButtonIndex);
+        }
+        await Promise.all([...randomAddToCartButtons].map(async (index) => itemsAddToCartButton[index].click()));
     }
 }

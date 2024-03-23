@@ -9,7 +9,7 @@ export class ShoppingCartPage extends BaseSwagLabPage {
 
     get headerTitle() { return this.page.locator('.title'); }
 
-    get cartItems() { return this.page.locator(this.cartItemSelector); }
+    get cartItems() { return this.page.locator('.cart_item'); }
 
     // async below added to show the function returns a promise
     async getCartItemByName(name) { return this.page.locator(this.cartItemSelector, { hasText: name }); }
@@ -24,7 +24,7 @@ export class ShoppingCartPage extends BaseSwagLabPage {
     }
 
     async getCartItemsList() {
-        const items = await this.CartItems.all();
+        const items = await this.cartItems.all();
         return Promise.all(items.map(async (item) => {
             const name = await item.locator('.inventory_item_name').textContent();
             const description = await item.locator('.inventory_item_desc').textContent();
