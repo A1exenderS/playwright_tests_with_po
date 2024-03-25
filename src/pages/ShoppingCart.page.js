@@ -1,6 +1,6 @@
-const { BaseSwagLabPage } = require('./BaseSwagLab.page');
+import { InventoryPage } from './Inventory.page';
 
-export class ShoppingCartPage extends BaseSwagLabPage {
+export class ShoppingCartPage extends InventoryPage {
     url = '/cart.html';
 
     cartItemSelector = '.cart_item';
@@ -10,6 +10,8 @@ export class ShoppingCartPage extends BaseSwagLabPage {
     get headerTitle() { return this.page.locator('.title'); }
 
     get cartItems() { return this.page.locator('.cart_item'); }
+
+    get checkoutButton() { return this.page.locator('#checkout'); }
 
     // async below added to show the function returns a promise
     async getCartItemByName(name) { return this.page.locator(this.cartItemSelector, { hasText: name }); }

@@ -58,5 +58,7 @@ export class InventoryPage extends BaseSwagLabPage {
         for (const index of randomAddToCartButtons) {
             await itemsAddToCartItems[index].locator(this.addItemToCartButtons).click();
         }
+
+        return randomAddToCartButtons;
     }
 }
