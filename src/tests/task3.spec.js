@@ -18,8 +18,8 @@ test.describe('Adding items to cart', () => {
         const allCheckoutItemsList = await checkoutStepTwoPage.getCheckoutItemsList();
         expect(allInventoryItemsList).toEqual(expect.arrayContaining(allCheckoutItemsList));
         await expect(checkoutStepTwoPage.summaryInfo).toBeVisible();
-        const priceTotal = checkoutStepTwoPage.getPriceTotal();
-        const calculatedTotalPrice = checkoutStepTwoPage.calculateTotalPrice();
+        const priceTotal = await checkoutStepTwoPage.getPriceTotal();
+        const calculatedTotalPrice = await checkoutStepTwoPage.calculateTotalPrice();
         expect(priceTotal).toEqual(calculatedTotalPrice);
     });
 });

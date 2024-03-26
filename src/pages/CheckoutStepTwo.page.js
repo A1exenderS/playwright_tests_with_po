@@ -46,8 +46,9 @@ export class CheckoutStepTwoPage extends BasePage {
             price = parseFloat(price.replace('$', ''));
             totalPrice += price;
         }));
-        const tax = this.getTax();
+        const tax = await this.getTax();
         totalPrice += tax;
-        return totalPrice;
+        const roundedTotalPrice = parseFloat(totalPrice.toFixed(2));
+        return roundedTotalPrice;
     }
 }
