@@ -1,5 +1,5 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
+import { getItemsList } from '../additionalFunctions';
+
 const { BaseSwagLabPage } = require('./BaseSwagLab.page');
 
 export class InventoryPage extends BaseSwagLabPage {
@@ -23,26 +23,19 @@ export class InventoryPage extends BaseSwagLabPage {
         await this.addItemToCartButtons.nth(id).click();
     }
 
+    /**
+     *
+     * @param {"za", "az", "lohi", "hilo"} value
+     */
     async performSorting(value) {
-        await this.productsSortSelect.selectOption(value); // az, za, lohi, hilo
+        await this.productsSortSelect.selectOption(value);
     }
 
     async getInventoryItemsList() {
-        const items = await this.inventoryItems.all();
-        return Promise.all(items.map(async (item) => {
-            const name = await item.locator('.inventory_item_name').textContent();
-            const description = await item.locator('.inventory_item_desc').textContent();
-            let price = await item.locator('.inventory_item_price').textContent();
-            price = price.replace('$', '');
-            return {
-                name,
-                description,
-                price,
-            };
-        }));
+        return getItemsList(this.inventoryItems);
     }
 
-    async addRandomItemsToCart() {
+    async selectRandomAddToCartButtons() {
         const itemsAddToCartItems = await this.inventoryItems.all();
 
         let amount = 0;
@@ -55,10 +48,33 @@ export class InventoryPage extends BaseSwagLabPage {
             const randomAddToCartButtonIndex = Math.floor(Math.random() * itemsAddToCartItems.length);
             randomAddToCartButtons.add(randomAddToCartButtonIndex);
         }
-        for (const index of randomAddToCartButtons) {
-            await itemsAddToCartItems[index].locator(this.addItemToCartButtons).click();
-        }
 
-        return randomAddToCartButtons;
+        return Array.from(randomAddToCartButtons);
+    }
+
+    async addRandomItemsToCart() {
+        const itemsAddToCartItems = await this.inventoryItems.all();
+        const randomAddToCartButtons = await this.selectRandomAddToCartButtons();
+        for (const index of randomAddToCartButtons) {
+            await (itemsAddToCartItems[index].locator(this.addItemToCartButtons)).click();
+        }
+    }
+
+    async getRandomItemDetails() {
+        const itemsAddToCartItems = await this.inventoryItems.all();
+        const itemsIndexesArr = await this.selectRandomAddToCartButtons();
+
+        return Promise.all(itemsIndexesArr.map(async (index) => {
+            const item = itemsAddToCartItems[index];
+            const name = await item.locator('.inventory_item_name').textContent();
+            const description = await item.locator('.inventory_item_desc').textContent();
+            let price = await item.locator('.inventory_item_price').textContent();
+            price = price.replace('$', '');
+            return {
+                name,
+                description,
+                price,
+            };
+        }));
     }
 }

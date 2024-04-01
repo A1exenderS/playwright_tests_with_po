@@ -1,6 +1,7 @@
-import { BasePage } from './Base.page';
+import { getItemsList } from '../additionalFunctions';
+import { ShoppingCartPage } from './ShoppingCart.page';
 
-export class CheckoutStepTwoPage extends BasePage {
+export class CheckoutStepTwoPage extends ShoppingCartPage {
     url = '/checkout-step-two.html';
 
     get checkoutItems() { return this.page.locator('.cart_item'); }
@@ -12,18 +13,7 @@ export class CheckoutStepTwoPage extends BasePage {
     get tax() { return this.page.locator('.summary_tax_label'); }
 
     async getCheckoutItemsList() {
-        const items = await this.checkoutItems.all();
-        return Promise.all(items.map(async (item) => {
-            const name = await item.locator('.inventory_item_name').textContent();
-            const description = await item.locator('.inventory_item_desc').textContent();
-            let price = await item.locator('.inventory_item_price').textContent();
-            price = price.replace('$', '');
-            return {
-                name,
-                description,
-                price,
-            };
-        }));
+        return getItemsList(this.checkoutItems);
     }
 
     async getPriceTotal() {

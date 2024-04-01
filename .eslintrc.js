@@ -42,5 +42,8 @@ module.exports = {
             ignoreTemplateLiterals: true,
             ignoreRegExpLiterals: true,
         }],
+        'no-restricted-syntax': 'off',
+        'no-await-in-loop': 'off',
+        'no-plusplus': 'off',
     },
 };

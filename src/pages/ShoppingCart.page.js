@@ -1,3 +1,4 @@
+import { getItemsList } from '../additionalFunctions';
 import { InventoryPage } from './Inventory.page';
 
 export class ShoppingCartPage extends InventoryPage {
@@ -9,7 +10,7 @@ export class ShoppingCartPage extends InventoryPage {
 
     get headerTitle() { return this.page.locator('.title'); }
 
-    get cartItems() { return this.page.locator('.cart_item'); }
+    get cartItems() { return this.page.locator(this.cartItemSelector); }
 
     get checkoutButton() { return this.page.locator('#checkout'); }
 
@@ -26,17 +27,6 @@ export class ShoppingCartPage extends InventoryPage {
     }
 
     async getCartItemsList() {
-        const items = await this.cartItems.all();
-        return Promise.all(items.map(async (item) => {
-            const name = await item.locator('.inventory_item_name').textContent();
-            const description = await item.locator('.inventory_item_desc').textContent();
-            let price = await item.locator('.inventory_item_price').textContent();
-            price = price.replace('$', '');
-            return {
-                name,
-                description,
-                price,
-            };
-        }));
+        return getItemsList(this.cartItems);
     }
 }
