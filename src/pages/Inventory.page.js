@@ -1,4 +1,4 @@
-import { getItemsList } from '../additionalFunctions';
+import { getItemsListData } from '../additionalFunctions';
 
 const { BaseSwagLabPage } = require('./BaseSwagLab.page');
 
@@ -32,10 +32,10 @@ export class InventoryPage extends BaseSwagLabPage {
     }
 
     async getInventoryItemsList() {
-        return getItemsList(this.inventoryItems);
+        return getItemsListData(this.inventoryItems);
     }
 
-    async selectRandomAddToCartButtons() {
+    async getRandomItemsIndexes() {
         const itemsAddToCartItems = await this.inventoryItems.all();
 
         let amount = 0;
@@ -43,28 +43,28 @@ export class InventoryPage extends BaseSwagLabPage {
             amount = Math.floor(Math.random() * (itemsAddToCartItems.length + 1));
         }
 
-        const randomAddToCartButtons = new Set();
-        while (randomAddToCartButtons.size < amount) {
+        const randomAddToCartIndexes = new Set();
+        while (randomAddToCartIndexes.size < amount) {
             const randomAddToCartButtonIndex = Math.floor(Math.random() * itemsAddToCartItems.length);
-            randomAddToCartButtons.add(randomAddToCartButtonIndex);
+            randomAddToCartIndexes.add(randomAddToCartButtonIndex);
         }
-
-        return Array.from(randomAddToCartButtons);
+        const randomAddToCartIndexesArr = Array.from(randomAddToCartIndexes);
+        randomAddToCartIndexesArr.sort((a, b) => a - b);
+        return randomAddToCartIndexesArr;
     }
 
-    async addRandomItemsToCart() {
+    async addRandomItemsToCart(arrWithIndexes) {
         const itemsAddToCartItems = await this.inventoryItems.all();
-        const randomAddToCartButtons = await this.selectRandomAddToCartButtons();
+        const randomAddToCartButtons = arrWithIndexes;
         for (const index of randomAddToCartButtons) {
             await (itemsAddToCartItems[index].locator(this.addItemToCartButtons)).click();
         }
     }
 
-    async getRandomItemDetails() {
+    async getRandomItemsData(arrWithIndexes) {
         const itemsAddToCartItems = await this.inventoryItems.all();
-        const itemsIndexesArr = await this.selectRandomAddToCartButtons();
 
-        return Promise.all(itemsIndexesArr.map(async (index) => {
+        return Promise.all(arrWithIndexes.map(async (index) => {
             const item = itemsAddToCartItems[index];
             const name = await item.locator('.inventory_item_name').textContent();
             const description = await item.locator('.inventory_item_desc').textContent();

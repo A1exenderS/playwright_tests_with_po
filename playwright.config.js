@@ -1,4 +1,5 @@
 // @ts-check
+
 const { defineConfig, devices } = require('@playwright/test');
 
 /**
@@ -10,6 +11,7 @@ const { defineConfig, devices } = require('@playwright/test');
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+
 module.exports = defineConfig({
     testDir: './src/tests',
     /* Run tests in files in parallel */
@@ -33,15 +35,15 @@ module.exports = defineConfig({
 
     /* Configure projects for major browsers */
     projects: [
-        // {
-        //     name: 'chromium',
-        //     use: { ...devices['Desktop Chrome'] },
-        // },
+        {
+            name: 'chromium',
+            use: { ...devices['Desktop Chrome'] },
+        },
 
-        // {
-        //     name: 'firefox',
-        //     use: { ...devices['Desktop Firefox'] },
-        // },
+        {
+            name: 'firefox',
+            use: { ...devices['Desktop Firefox'] },
+        },
 
         {
             name: 'webkit',
@@ -71,8 +73,8 @@ module.exports = defineConfig({
 
     /* Run your local dev server before starting the tests */
     // webServer: {
-    //   command: 'npm run start',
-    //   url: 'http://127.0.0.1:3000',
-    //   reuseExistingServer: !process.env.CI,
+    //     command: 'npm run start',
+    //     url: 'http://127.0.0.1:3000',
+    //     reuseExistingServer: !process.env.CI,
     // },
 });

@@ -1,4 +1,4 @@
-export async function getItemsList(itemSelector) {
+export async function getItemsListData(itemSelector) {
     const items = await itemSelector.all();
     return Promise.all(items.map(async (item) => {
         const name = await item.locator('.inventory_item_name').textContent();

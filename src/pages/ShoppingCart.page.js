@@ -1,4 +1,4 @@
-import { getItemsList } from '../additionalFunctions';
+import { getItemsListData } from '../additionalFunctions';
 import { InventoryPage } from './Inventory.page';
 
 export class ShoppingCartPage extends InventoryPage {
@@ -27,6 +27,6 @@ export class ShoppingCartPage extends InventoryPage {
     }
 
     async getCartItemsList() {
-        return getItemsList(this.cartItems);
+        return getItemsListData(this.cartItems);
     }
 }

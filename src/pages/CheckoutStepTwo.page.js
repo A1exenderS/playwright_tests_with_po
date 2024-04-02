@@ -1,4 +1,4 @@
-import { getItemsList } from '../additionalFunctions';
+import { getItemsListData } from '../additionalFunctions';
 import { ShoppingCartPage } from './ShoppingCart.page';
 
 export class CheckoutStepTwoPage extends ShoppingCartPage {
@@ -13,7 +13,7 @@ export class CheckoutStepTwoPage extends ShoppingCartPage {
     get tax() { return this.page.locator('.summary_tax_label'); }
 
     async getCheckoutItemsList() {
-        return getItemsList(this.checkoutItems);
+        return getItemsListData(this.checkoutItems);
     }
 
     async getPriceTotal() {
@@ -28,14 +28,14 @@ export class CheckoutStepTwoPage extends ShoppingCartPage {
         return tax;
     }
 
-    async calculateTotalPrice() {
-        const items = await this.checkoutItems.all();
+    async calculateTotalPrice(itemsListData, arrWithIndexes) {
+        const itemsAddToCartItems = itemsListData;
         let totalPrice = 0;
-        await Promise.all(items.map(async (item) => {
-            let price = await item.locator('.inventory_item_price').textContent();
+        for (const i of arrWithIndexes) {
+            let price = await itemsAddToCartItems[i].price;
             price = parseFloat(price.replace('$', ''));
             totalPrice += price;
-        }));
+        }
         const tax = await this.getTax();
         totalPrice += tax;
         const roundedTotalPrice = parseFloat(totalPrice.toFixed(2));

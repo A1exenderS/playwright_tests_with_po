@@ -1,8 +1,12 @@
 const { expect } = require('@playwright/test');
 const { test } = require('../fixture');
+// require('dotenv').config();
+// got error 'dotenv' should be listed in the project's dependencies. Run 'npm i -S dotenv' to add it
 
 test.describe('filtering checks', () => {
     test.beforeEach(async ({ loginPage }) => {
+        // const username = process.env.USERNAME;
+        // const password = process.env.PASSWORD;
         await loginPage.navigate();
         await loginPage.performLogin('standard_user', 'secret_sauce');
     });
