@@ -10,6 +10,8 @@ npm install
 
 ## Usage
 
+To run tests, you need to configure the .env file with user data
+
 ### Run tests:
 ```bash
 npm run test
