@@ -1,4 +1,4 @@
-import { getItemsListData } from '../additionalFunctions';
+import { getItemsListData } from '../HelperFunctions.util';
 import { InventoryPage } from './Inventory.page';
 
 export class ShoppingCartPage extends InventoryPage {

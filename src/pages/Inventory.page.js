@@ -1,11 +1,9 @@
-import { getItemsListData } from '../additionalFunctions';
+import { getItemsListData } from '../HelperFunctions.util';
 
 const { BaseSwagLabPage } = require('./BaseSwagLab.page');
 
 export class InventoryPage extends BaseSwagLabPage {
     url = '/inventory.html';
-
-    get addButton() { return this.page.locator('//button[contains(text(), "Add to cart")]'); }
 
     get headerTitle() { return this.page.locator('.title'); } // .header_secondary_container - parent
 

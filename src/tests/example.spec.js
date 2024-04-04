@@ -1,11 +1,15 @@
 // @ts-check
+import { getUserCredentials } from '../HelperFunctions.util';
+import 'dotenv/config';
+
 const { expect } = require('@playwright/test');
 const { test } = require('../fixture');
 
 test.describe('', () => {
     test.beforeEach(async ({ loginPage }) => {
+        const user = getUserCredentials('STANDARD_USER');
         await loginPage.navigate();
-        await loginPage.performLogin('standard_user', 'secret_sauce');
+        await loginPage.performLogin(user.userName, user.password);
     });
 
     test('Perform login', async ({ inventoryPage }) => {

@@ -1,3 +1,4 @@
+import { getUserCredentials, performDefaultListSorting } from '../HelperFunctions.util';
 import 'dotenv/config';
 
 const { expect } = require('@playwright/test');
@@ -5,39 +6,21 @@ const { test } = require('../fixture');
 
 test.describe('filtering checks', () => {
     test.beforeEach(async ({ loginPage }) => {
-        const userName = process.env.STANDARD_USER_NAME;
-        const password = process.env.PASSWORD;
+        const user = getUserCredentials('STANDARD_USER');
         await loginPage.navigate();
-        await loginPage.performLogin(userName, password);
+        await loginPage.performLogin(user.userName, user.password);
     });
 
-    test('Perform and verify sorting on the Inventory page (az)', async ({ inventoryPage }) => {
-        const defaultList = await inventoryPage.getInventoryItemsList();
-        await inventoryPage.performSorting('az');
-        const sortedList = await inventoryPage.getInventoryItemsList();
-        expect(sortedList).toEqual(defaultList.sort((a, b) => a.name.localeCompare(b.name)));
-    });
-
-    test('Perform and verify sorting on the Inventory page (za)', async ({ inventoryPage }) => {
-        const defaultList = await inventoryPage.getInventoryItemsList();
-        await inventoryPage.performSorting('za');
-        const sortedList = await inventoryPage.getInventoryItemsList();
-        expect(sortedList).toEqual(defaultList.sort((a, b) => b.name.localeCompare(a.name)));
-    });
-
-    test('Perform and verify sorting on the Inventory page (hilo)', async ({ inventoryPage }) => {
-        const defaultList = await inventoryPage.getInventoryItemsList();
-        await inventoryPage.performSorting('hilo');
-        const sortedList = await inventoryPage.getInventoryItemsList();
-        expect(sortedList).toEqual(defaultList.sort((a, b) => b.price - a.price));
-    });
-
-    test('Perform and verify sorting on the Inventory page (lohi)', async ({ inventoryPage }) => {
-        const defaultList = await inventoryPage.getInventoryItemsList();
-        await inventoryPage.performSorting('lohi');
-        const sortedList = await inventoryPage.getInventoryItemsList();
-        expect(sortedList).toEqual(defaultList.sort((a, b) => a.price - b.price));
-    });
+    const filterValues = ['za', 'az', 'lohi', 'hilo'];
+    for (const value of filterValues) {
+        test(`Perform and verify sorting on the Inventory page ${value}`, async ({ inventoryPage }) => {
+            const defaultList = await inventoryPage.getInventoryItemsList();
+            const sortedDefaultList = performDefaultListSorting(defaultList, value);
+            await inventoryPage.performSorting(value);
+            const sortedList = await inventoryPage.getInventoryItemsList();
+            expect(sortedList).toEqual(sortedDefaultList);
+        });
+    }
 
     test('Verification of Display Accuracy after Adding Random Products to Cart', async ({ inventoryPage, shoppingCartPage }) => {
         const allInventoryItemsList = await inventoryPage.getInventoryItemsList();
