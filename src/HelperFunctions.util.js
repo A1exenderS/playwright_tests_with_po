@@ -16,11 +16,29 @@ export async function getItemsListData(itemSelector) {
 export const getUserCredentials = (userType) => {
     switch (userType) {
         case 'STANDARD_USER':
-            return { userName: process.env.STANDARD_USER_NAME, password: process.env.PASSWORD };
+            return {
+                userName: process.env.STANDARD_USER_NAME,
+                password: process.env.PASSWORD,
+                firstName: process.env.STANDARD_USER_FIRST_NAME,
+                lastName: process.env.STANDARD_USER_LAST_NAME,
+                zipCode: process.env.STANDARD_USER_ZIP,
+            };
         case 'LOCKED_OUT_USER':
-            return { userName: process.env.LOCKED_OUT_USER_NAME, password: process.env.PASSWORD };
+            return {
+                userName: process.env.LOCKED_OUT_USER_NAME,
+                password: process.env.PASSWORD,
+                firstName: process.env.LOCKED_OUT_USER_FIRST_NAME,
+                lastName: process.env.LOCKED_OUT_USER_LAST_NAME,
+                zipCode: process.env.LOCKED_OUT_USER_ZIP,
+            };
         case 'PROBLEM_USER':
-            return { userName: process.env.PROBLEM_USER_NAME, password: process.env.PASSWORD };
+            return {
+                userName: process.env.PROBLEM_USER_NAME,
+                password: process.env.PASSWORD,
+                firstName: process.env.PROBLEM_USER_FIRST_NAME,
+                lastName: process.env.PROBLEM_USER_LAST_NAME,
+                zipCode: process.env.PROBLEM_USER_ZIP,
+            };
         default:
             throw new Error(`User type ${userType} not found`);
     }

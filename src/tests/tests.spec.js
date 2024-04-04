@@ -4,7 +4,7 @@ import 'dotenv/config';
 const { expect } = require('@playwright/test');
 const { test } = require('../fixture');
 
-test.describe('filtering checks', () => {
+test.describe('', () => {
     test.beforeEach(async ({ loginPage }) => {
         const user = getUserCredentials('STANDARD_USER');
         await loginPage.navigate();
@@ -34,11 +34,9 @@ test.describe('filtering checks', () => {
     test('Verification of Display Accuracy after Adding Random Products to Cart v2', async ({ inventoryPage, shoppingCartPage }) => {
         const allInventoryItemsList = await inventoryPage.getInventoryItemsList();
         const randomItemsIndexesArray = await inventoryPage.getRandomItemsIndexes();
-        // const selectedItemsData = await inventoryPage.getRandomItemsData(randomItemsIndexesArray);
         await inventoryPage.addRandomItemsToCart(randomItemsIndexesArray);
         await inventoryPage.shoppingCart.click();
         const cartItemsListData = await shoppingCartPage.getCartItemsList();
-        // тут виходить, що я кожну проперті доданого айтему, порівнюю з поперті айтему масиву усих елементів, тому наче має бути норм
         for (const i of randomItemsIndexesArray) {
             const k = randomItemsIndexesArray.indexOf(i);
             expect(await allInventoryItemsList[i].name).toEqual(cartItemsListData[k].name);
@@ -73,7 +71,8 @@ test.describe('filtering checks', () => {
         await inventoryPage.addRandomItemsToCart(randomItemsIndexesArray);
         await inventoryPage.shoppingCart.click();
         await shoppingCartPage.checkoutButton.click();
-        await checkoutStepOnePage.fillAndConfirmCheckoutStepOne('Ssssss', 'Sssssss', '45674');
+        const user = getUserCredentials('STANDARD_USER');
+        await checkoutStepOnePage.fillAndConfirmCheckoutStepOne(user.firstName, user.lastName, user.zipCode);
         const checkoutItemsListData = await checkoutStepTwoPage.getCheckoutItemsList();
         for (const i of randomItemsIndexesArray) {
             const k = randomItemsIndexesArray.indexOf(i);
@@ -83,7 +82,6 @@ test.describe('filtering checks', () => {
         }
         await expect(checkoutStepTwoPage.summaryInfo).toBeVisible();
         const priceTotal = await checkoutStepTwoPage.getPriceTotal();
-        // це наче також змінив, бо я беру ціни елементів котрі додаю з inventoryPage, і порівнюю їх з priceTotal, котрий відображається на сторінці
         const calculatedTotalPrice = await checkoutStepTwoPage
             .calculateTotalPrice(inventoryItemsListData, randomItemsIndexesArray);
         expect(priceTotal).toEqual(calculatedTotalPrice);

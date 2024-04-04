@@ -1,7 +1,7 @@
 import { getItemsListData } from '../HelperFunctions.util';
-import { InventoryPage } from './Inventory.page';
+import { BaseSwagLabPage } from './BaseSwagLab.page';
 
-export class ShoppingCartPage extends InventoryPage {
+export class ShoppingCartPage extends BaseSwagLabPage {
     url = '/cart.html';
 
     cartItemSelector = '.cart_item';

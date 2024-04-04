@@ -47,7 +47,6 @@ export class InventoryPage extends BaseSwagLabPage {
             randomAddToCartIndexes.add(randomAddToCartButtonIndex);
         }
         const randomAddToCartIndexesArr = Array.from(randomAddToCartIndexes);
-        randomAddToCartIndexesArr.sort((a, b) => a - b);
         return randomAddToCartIndexesArr;
     }
 

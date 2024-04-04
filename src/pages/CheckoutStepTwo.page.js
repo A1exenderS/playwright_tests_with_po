@@ -1,7 +1,7 @@
 import { getItemsListData } from '../HelperFunctions.util';
-import { ShoppingCartPage } from './ShoppingCart.page';
+import { BaseSwagLabPage } from './BaseSwagLab.page';
 
-export class CheckoutStepTwoPage extends ShoppingCartPage {
+export class CheckoutStepTwoPage extends BaseSwagLabPage {
     url = '/checkout-step-two.html';
 
     get checkoutItems() { return this.page.locator('.cart_item'); }
